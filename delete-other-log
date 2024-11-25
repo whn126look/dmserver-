@@ -1,0 +1,7 @@
+#!/bin/bash
+## clear log bug remain db's log
+
+ini=`ps -ef|grep dms|grep -v grep|awk '{print $9}'|cut -b 6-`
+ins=`grep INSTANCE_NAME $ini|awk -F' = ' '{print $2}'|awk -F' #' '{gsub (" ", "", $1); print "dm_"$1"*.log"}'`
+find $DM_HOME/log -type f ! -name "$ins" -mtime +31|du -ch
+find $DM_HOME/log -type f ! -name "$ins" -mtime +31|xargs rm -fr
